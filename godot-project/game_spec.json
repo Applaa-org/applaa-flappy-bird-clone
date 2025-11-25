@@ -1,0 +1,77 @@
+{
+  "game": {
+    "name": "FLAPPY BIRD CLONE",
+    "type": "2D",
+    "description": "A real-time Flappy Bird style game where players control a bird to fly through pipe gaps",
+    "genre": "arcade",
+    "version": "1.0.0"
+  },
+  "settings": {
+    "window": {
+      "width": 800,
+      "height": 600
+    },
+    "physics": {
+      "gravity": 980,
+      "flap_impulse": -300,
+      "pipe_speed": 200,
+      "pipe_speed_increment": 10
+    }
+  },
+  "player": {
+    "name": "Bird",
+    "type": "character",
+    "health": 1,
+    "speed": 0,
+    "abilities": ["flap"],
+    "controls": {
+      "flap": ["space", "mouse_click"]
+    }
+  },
+  "obstacles": [
+    {
+      "name": "Pipe",
+      "type": "moving_obstacle",
+      "color": "green",
+      "gap_size": 150,
+      "gap_variation": 100
+    }
+  ],
+  "levels": [
+    {
+      "name": "Endless",
+      "background": "sky",
+      "difficulty": "increasing",
+      "spawn_rate": 2.0
+    }
+  ],
+  "assets": {
+    "sprites": [
+      {
+        "name": "bird",
+        "path": "res://sprites/bird.png",
+        "frames": 3,
+        "animation_speed": 10
+      },
+      {
+        "name": "pipe",
+        "path": "res://sprites/pipe.png"
+      }
+    ],
+    "sounds": [],
+    "music": []
+  },
+  "logic": {
+    "winCondition": "survive_endlessly",
+    "loseCondition": "collision_with_obstacle_or_ground",
+    "scoring": {
+      "pointsPerPipe": 1,
+      "multiplier": 1
+    },
+    "ui": {
+      "score_display": "top_center",
+      "game_over_screen": true,
+      "restart_button": true
+    }
+  }
+}

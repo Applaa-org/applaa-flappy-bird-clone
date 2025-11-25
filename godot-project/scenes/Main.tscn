@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://bird_scene" path="res://scenes/Bird.tscn" id="2_bird"]
+[ext_resource type="PackedScene" uid="uid://pipe_scene" path="res://scenes/Pipe.tscn" id="3_pipe"]
+
+[sub_resource type="StyleBoxFlat" id="1_game_over_bg"]
+bg_color = Color(0, 0, 0, 0.7)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+pipe_scene = ExtResource("3_pipe")
+
+[node name="Bird" parent="." instance=ExtResource("2_bird")]
+position = Vector2(100, 300)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+text = "Score: 0"
+horizontal_alignment = 1
+
+[node name="GameOverScreen" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+
+[node name="Panel" type="Panel" parent="GameOverScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("1_game_over_bg")
+
+[node name="GameOverLabel" type="Label" parent="GameOverScreen/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_top = 10.0
+offset_bottom = 40.0
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="FinalScoreLabel" type="Label" parent="GameOverScreen/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_top = 40.0
+offset_bottom = 70.0
+text = "Final Score: 0"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOverScreen/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = -20.0
+text = "Restart"
