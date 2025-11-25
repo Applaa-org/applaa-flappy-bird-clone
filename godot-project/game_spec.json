@@ -4,7 +4,7 @@
     "type": "2D",
     "description": "A real-time Flappy Bird style game where players control a bird to fly through pipe gaps",
     "genre": "arcade",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "settings": {
     "window": {
@@ -12,10 +12,11 @@
       "height": 600
     },
     "physics": {
-      "gravity": 980,
-      "flap_impulse": -300,
-      "pipe_speed": 200,
-      "pipe_speed_increment": 10
+      "gravity": 600,
+      "flap_impulse": -350,
+      "max_fall_speed": 350,
+      "soft_gravity_duration": 0.3,
+      "soft_gravity_strength": 300
     }
   },
   "player": {

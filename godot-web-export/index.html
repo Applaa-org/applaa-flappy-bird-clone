@@ -152,10 +152,12 @@
         const startButton = document.getElementById('startButton');
         const restartButton = document.getElementById('restartButton');
 
-        // Game constants (matching game_spec.json and GDScript)
-        const GRAVITY = 980;
-        const FLAP_IMPULSE = -300;
-        const MAX_FALL_SPEED = 400;
+        // Game constants (updated for smoother physics)
+        const GRAVITY = 600;
+        const FLAP_IMPULSE = -350;
+        const MAX_FALL_SPEED = 350;
+        const SOFT_GRAVITY_DURATION = 0.3;
+        const SOFT_GRAVITY_STRENGTH = 300;
         const PIPE_SPEED = 200;
         const PIPE_SPEED_INCREMENT = 10;
         const SPAWN_RATE = 2.0;
@@ -179,6 +181,7 @@
         let birdAlive = true;
         let flapRotation = -0.5;
         let fallRotation = 0.8;
+        let softGravityTimer = 0;
 
         // Pipes array
         let pipes = [];
@@ -213,6 +216,7 @@
             birdVelocityY = 0;
             birdRotation = 0;
             birdAlive = true;
+            softGravityTimer = 0;
             pipes = [];
             gameRunning = true;
             startScreen.style.display = 'none';
@@ -236,8 +240,13 @@
         function update(delta) {
             if (!birdAlive) return;
 
-            // Update bird physics (matching Bird.gd)
-            birdVelocityY += GRAVITY * delta;
+            // Apply soft gravity or normal gravity (matching updated Bird.gd)
+            if (softGravityTimer > 0) {
+                birdVelocityY += SOFT_GRAVITY_STRENGTH * delta;
+                softGravityTimer -= delta;
+            } else {
+                birdVelocityY += GRAVITY * delta;
+            }
             birdVelocityY = Math.min(birdVelocityY, MAX_FALL_SPEED);
             birdY += birdVelocityY * delta;
 
@@ -245,6 +254,7 @@
             if (flapPressed) {
                 birdVelocityY = FLAP_IMPULSE;
                 birdRotation = flapRotation;
+                softGravityTimer = SOFT_GRAVITY_DURATION;
                 flapPressed = false;
             }
 

@@ -1,8 +1,10 @@
 extends CharacterBody2D
 
-@export var gravity: float = 980.0
-@export var flap_impulse: float = -300.0
-@export var max_fall_speed: float = 400.0
+@export var gravity: float = 600.0
+@export var flap_impulse: float = -350.0
+@export var max_fall_speed: float = 350.0
+@export var soft_gravity_duration: float = 0.3
+@export var soft_gravity_strength: float = 300.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -10,6 +12,7 @@ extends CharacterBody2D
 var is_alive: bool = true
 var flap_rotation: float = -0.5
 var fall_rotation: float = 0.8
+var soft_gravity_timer: float = 0.0
 
 func _ready():
     sprite.play("flap")
@@ -18,8 +21,12 @@ func _physics_process(delta: float):
     if not is_alive:
         return
     
-    # Apply gravity
-    velocity.y += gravity * delta
+    # Apply soft gravity or normal gravity
+    if soft_gravity_timer > 0:
+        velocity.y += soft_gravity_strength * delta
+        soft_gravity_timer -= delta
+    else:
+        velocity.y += gravity * delta
     
     # Limit fall speed
     velocity.y = min(velocity.y, max_fall_speed)
@@ -29,6 +36,7 @@ func _physics_process(delta: float):
         velocity.y = flap_impulse
         rotation = flap_rotation
         sprite.play("flap")
+        soft_gravity_timer = soft_gravity_duration
     
     # Rotate based on velocity
     if velocity.y < 0:
@@ -48,6 +56,7 @@ func flap():
         velocity.y = flap_impulse
         rotation = flap_rotation
         sprite.play("flap")
+        soft_gravity_timer = soft_gravity_duration
 
 func die():
     is_alive = false
@@ -61,4 +70,5 @@ func reset():
     velocity = Vector2.ZERO
     rotation = 0
     is_alive = true
+    soft_gravity_timer = 0.0
     sprite.play("flap")
